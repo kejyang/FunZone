@@ -14,6 +14,7 @@ class TabViewController: UITabBarController {
         //self.navigationItem.hidesBackButton = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         // Do any additional setup after loading the view.
+        //UITabBar.appearance().unselectedItemTintColor = UIColor.lightGray
     }
     
 

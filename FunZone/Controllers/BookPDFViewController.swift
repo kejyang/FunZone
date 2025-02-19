@@ -26,9 +26,7 @@ class BookPDFViewController: UIViewController {
         bookImg?.addGestureRecognizer(tapGesture)
     }
     
-    func onImgPress(){
-        
-    }
+
     
     @objc func imgTapped(){
         print("im here")

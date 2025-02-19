@@ -70,3 +70,39 @@ class DBHelper{
     }
     
 }
+
+//For user operations
+extension DBHelper{
+    func addUser( username: String, password: String){
+        let user = NSEntityDescription.insertNewObject(forEntityName:"UserEntity", into: context) as? UserEntity
+        user?.username = username
+        user?.password = password
+        do{
+            try context.save()
+            print("data saved")
+        }
+        catch let error{
+            print("error \(error)")
+        }
+    }
+    
+    func getUser(username: String) -> UserEntity? {
+        var student : UserEntity? = UserEntity()
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"UserEntity")
+        fetchRequest.predicate = NSPredicate(format: "username == %@", username)
+        do{
+            let request = try context.fetch(fetchRequest) as! [UserEntity]
+            if request.count > 0{
+                student = request.first
+            }
+            else{
+                student = nil
+                print("no data")
+            }
+        }
+        catch let error{
+            print("error \(error)")
+        }
+        return student
+    }
+}

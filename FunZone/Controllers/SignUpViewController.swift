@@ -11,37 +11,37 @@ class SignUpViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        credentialErrorMsg.isHidden = true
         // Do any additional setup after loading the view.
     }
     
 
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var username: UITextField!
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    @IBOutlet weak var passwordConfirm: UITextField!
+    @IBOutlet weak var credentialErrorMsg: UILabel!
+    
     @IBAction func validate(_ sender: Any) {
         if(username.text!.isEmpty || password.text!.isEmpty){
             print("please enter credentials")
+            credentialErrorMsg.text! = "Please enter credentials!"
+            credentialErrorMsg.isHidden = false
+        }
+        else if(password.text! != passwordConfirm.text!){
+            print("passwords don't match!")
+            credentialErrorMsg.text! = "Passwords do not match!"
+            credentialErrorMsg.isHidden = false
         }
         else{
-            let attributes: [String: Any] = [
-                kSecClass as String: kSecClassGenericPassword,
-                kSecAttrAccount as String: username.text!,
-                kSecValueData as String: password.text!.data(using: .utf8)!]
-            if SecItemAdd(attributes as CFDictionary, nil) == errSecSuccess{
-                print("data saved succesfully")
+            if let existingUsername = DBHelper.shared.getUser(username: username.text!){
+                print("User already exists")
+                credentialErrorMsg.isHidden = false
+                credentialErrorMsg.text! = "User already exists!"
             }
             else{
-                print("data not saved")
+                DBHelper.shared.addUser(username: username.text!, password: password.text!)
+                credentialErrorMsg.isHidden = true
+                navigationController?.popViewController(animated: true)
             }
         }
     }

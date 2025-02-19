@@ -13,6 +13,8 @@ class EditNoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //noteTextView.text = NotesViewController.noteData[row]
+        noteTextView.layer.cornerRadius = 12
+        noteTextView.layer.masksToBounds = true
         noteTextView.text = noteText
         // Do any additional setup after loading the view.
     }

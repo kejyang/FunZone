@@ -15,8 +15,20 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "noteCell", for: indexPath) as! NotesTableViewCell
+        
+        cell.contentView.layer.cornerRadius = 12
+        cell.contentView.layer.masksToBounds = true
+        cell.contentView.backgroundColor = .white
+        
+        cell.backgroundColor = .clear
+        tableView.backgroundColor = .clear
+        
         cell.noteText?.text = noteData[indexPath.row].noteText
         return cell
+    }
+    
+    func tableView(_ tableView : UITableView, heightForRowAt indexPath:IndexPath) -> CGFloat{
+        return 150
     }
     
     var noteData : [Note] = []
@@ -73,7 +85,7 @@ class NotesViewController: UIViewController, UITableViewDelegate, UITableViewDat
 extension NotesViewController {
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
-        noteData = DBHelper.shared.getData()
+        noteData = DBHelper.shared.getData().reversed()
         tableView.reloadData()
     }
 }
